@@ -3,11 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 
 from app.core.db import engine, Base
-from app.models import models
+from app.models.models import User, Profile, Roadmap, Interview
 from app.api.endpoints import router as api_router
+from app.api.auth import router as auth_router
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print(f"Warning: Database tables not created: {e}")
 
 app = FastAPI(
     title="InterviewPilot AI API",
@@ -24,6 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth_router, prefix="/api/v1")
 app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/")

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -32,8 +33,8 @@ export default function Home() {
           <a href="#" className="hover:text-foreground transition-colors">Pricing</a>
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="ghost">Login</Button>
-          <Button className="bg-primary hover:bg-primary/90">Get Started</Button>
+          <Link href="/login"><Button variant="ghost">Login</Button></Link>
+          <Link href="/register"><Button className="bg-primary hover:bg-primary/90">Get Started</Button></Link>
         </div>
       </nav>
 

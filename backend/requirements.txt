@@ -6,7 +6,7 @@ sqlalchemy
 psycopg2-binary
 python-dotenv
 python-multipart
-jose[cryptography]
+python-jose[cryptography]
 passlib[bcrypt]
 langchain
 langgraph

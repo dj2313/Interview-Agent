@@ -1,115 +1,143 @@
-# InterviewPilot AI
+# ⚡ InterviewPilot AI — Premium AI-Powered Technical Interview Mentor
 
-An AI-powered interview preparation platform that acts as a personalized technical interview mentor. It researches latest trends, generates custom roadmaps, and simulates real recruiter/technical interviews using AI agents.
+<p align="center">
+  <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/Next.js%2016-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/Tailwind%20v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/LangChain-1C3C3A?style=for-the-badge&logo=chainlink&logoColor=white" alt="LangChain" />
+  <img src="https://img.shields.io/badge/Hive%20DB-FF6B6B?style=for-the-badge&logo=hive&logoColor=white" alt="Hive DB" />
+</p>
 
-## Architecture
+---
 
+## 🎯 Project Vision
+**InterviewPilot AI** is a production-grade, AI-driven technical preparation platform designed to operate as a highly personalized, adaptive technical mentor. 
+
+Unlike static question banks, InterviewPilot uses **multi-agent architectures** to research real-time hiring trends, compile bespoke roadmaps, and conduct intelligent mock interviews.
+
+---
+
+## 📸 Key Features
+* 🤖 **AI Mock Interviewer** — Simulates HR, behavioral, technical, and system design rounds with a persistent conversational memory.
+* 🗺️ **Smart Roadmap Generator** — Dynamically crafts a structured day-by-day plan tailored to target roles, tech stacks, and company patterns.
+* 🔍 **Real-Time Market Research** — Scrapes live trends across GitHub, Reddit, Stack Overflow, and engineering blogs using the Tavily Search API.
+* 📦 **Zero-Config Box Storage (Hive DB)** — Utilizes a highly efficient, file-based NoSQL JSON box storage model (`./hive_data/`), replacing heavy database servers for seamless local developer setup.
+* 🔑 **Rapid Developer Auth** — Features a simplified plain-text credential schema to make local onboarding, testing, and debugging lightning fast.
+* 🎨 **Stunning Dark Mode UI** — Designed with a high-end glassmorphism design system using React 19, Tailwind CSS v4, and Framer Motion.
+
+---
+
+## 🏗️ Architecture & Flow
+
+### 1. Multi-Agent AI Pipeline
+```mermaid
+graph TD
+    A[User Profile & Tech Stack] --> B[Research Agent]
+    B -->|Tavily Web Search| C[Hiring Trends & Topics]
+    C --> D[Roadmap Generator]
+    D -->|Synthesized Plan| E[Active Roadmap Box]
+    E --> F[AI Mock Interviewer]
+    F -->|Interactive Chat| G[Feedback & Readiness Score]
+```
+
+### 2. Project Directory Structure
 ```
 interview-agent/
-├── backend/          # FastAPI + LangChain AI agents
+├── backend/                  # FastAPI Backend Engine
 │   ├── app/
-│   │   ├── agents/       # AI agents (interviewer, researcher, roadmap)
-│   │   ├── api/          # REST endpoints
-│   │   ├── core/         # Config, DB, security
-│   │   ├── models/       # SQLAlchemy models
-│   │   ├── schemas/      # Pydantic schemas
-│   │   └── services/     # Business logic
+│   │   ├── agents/           # Multi-Agent Architectures (Interviewer, Researcher, Roadmap)
+│   │   ├── api/              # RESTful API Endpoints & Auth Handlers
+│   │   ├── core/             # Configuration, Security, and Hive DB engine
+│   │   ├── models/           # Declarative DB Schema definitions
+│   │   ├── schemas/          # Pydantic Schemas for data validation
+│   │   └── services/         # Orchestrated Roadmap & Interview business logic
+│   ├── hive_data/            # Zero-Config Key-Value Box Storage (.json)
 │   └── requirements.txt
-├── frontend/         # Next.js 16 + shadcn/ui
+├── frontend/                 # Next.js 16 Web Portal
 │   ├── src/
-│   │   ├── app/          # Pages (landing, dashboard, interview)
-│   │   ├── components/   # UI components
-│   │   └── lib/          # Utilities
+│   │   ├── app/              # Dashboard, Onboarding, Authentication pages
+│   │   ├── components/       # Shadcn UI Glassmorphism components
+│   │   └── lib/              # API and Context states
 │   └── package.json
-└── PRD.md            # Product requirements
+└── PRD.md                    # Core Product Requirements Document
 ```
 
-## Tech Stack
+---
 
-**Frontend:** Next.js 16, React 19, Tailwind CSS v4, shadcn/ui (Base UI), Framer Motion, TanStack Query
+## 💾 Storage Layer: Local Hive DB
+To eliminate the complexity of running local SQLite/PostgreSQL databases during development, we've implemented a **pure Python Hive DB storage engine** located under `./backend/hive_data/`. 
 
-**Backend:** FastAPI, SQLAlchemy, PostgreSQL, LangChain, LangGraph, Redis
+This replicates the "Box" storage paradigm from Flutter/Dart:
+* 📂 **`users.json`** — Stores accounts and basic info (plain text for rapid local testing).
+* 📂 **`profiles.json`** — Stores onboarded candidate targets, tech stack, and experience.
+* 📂 **`roadmaps.json`** — Stores generated preparation curricula.
+* 📂 **`interviews.json`** — Stores complete transcript message history, feedback, and mock scores.
 
-**AI:** OpenAI GPT-4o, Tavily Search, Pinecone vector DB
+All database queries utilize a fully transparent `HiveSession` wrapper over standard SQLAlchemy syntax, maintaining complete ORM flexibility without standard database installation dependencies.
 
-## Getting Started
+---
+
+## ⚡ Getting Started
 
 ### Prerequisites
+* **Node.js** >= 20.x
+* **Python** >= 3.11.x
 
-- Node.js >= 20
-- Python >= 3.11
-- PostgreSQL (running locally)
-- Redis (optional, for caching)
-
-### Backend Setup
-
+### 1. Backend Engine Setup
+Navigate to the backend directory, spin up a virtual environment, and install dependencies:
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate   # or `venv\Scripts\activate` on Windows
+# On Windows
+venv\Scripts\activate
+# On macOS/Linux
+source venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env` and fill in your keys:
-
+Create your configuration environment file:
 ```bash
 cp .env.example .env
 ```
 
-Required environment variables:
+Configure your API credentials inside `.env`:
+```env
+OPENAI_API_KEY=your_openai_key
+TAVILY_API_KEY=your_tavily_search_key
+SECRET_KEY=your_development_jwt_secret
+```
 
-| Variable | Description |
-|---|---|
-| `OPENAI_API_KEY` | OpenAI API key |
-| `TAVILY_API_KEY` | Tavily search API key |
-| `DATABASE_URL` | PostgreSQL connection string |
-| `SECRET_KEY` | JWT signing secret |
-
-Run the server:
-
+Launch the FastAPI dev server:
 ```bash
 uvicorn app.main:app --reload
 ```
+* The API runs locally at `http://localhost:8000`.
+* Interactive API Documentation (Swagger) is available at `http://localhost:8000/docs`.
 
-API runs at `http://localhost:8000`. Docs at `http://localhost:8000/docs`.
-
-### Frontend Setup
-
+### 2. Frontend Interface Setup
+Open a separate terminal window and build the Next.js UI portal:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+* The web application launches at `http://localhost:3000`.
 
-App runs at `http://localhost:3000`.
+---
 
-## Features
+## 🤝 Key API Endpoints
 
-- **AI Mock Interviewer** — Realistic technical/behavioral interviews with follow-up questions and feedback
-- **Smart Roadmap Generator** — Personalized 2-week preparation plans based on role and tech stack
-- **Real-time Research** — Scrapes latest interview trends from GitHub, Reddit, Stack Overflow, and blogs
-- **Adaptive Questioning** — Questions adjust difficulty based on your answers
-- **Progress Tracking** — Visual dashboard with readiness scores and weak area detection
-- **Dark Theme UI** — Premium glass morphism design with smooth animations
-
-## AI Agents
-
-| Agent | Role |
-|---|---|
-| `MockInterviewer` | Simulates a senior interviewer, asks questions, evaluates answers |
-| `ResearchAgent` | Searches the web for latest interview trends and patterns |
-| `RoadmapGenerator` | Structures research into a daily preparation plan |
-
-## API Endpoints
-
-| Method | Path | Description |
+| Method | Endpoint | Description |
 |---|---|---|
-| GET | `/health` | Health check |
-| POST | `/api/v1/roadmaps` | Generate preparation roadmap |
-| GET | `/api/v1/roadmaps` | Get user roadmaps |
-| POST | `/api/v1/interviews` | Start a mock interview |
-| GET | `/api/v1/interviews` | Get interview history |
+| **POST** | `/api/v1/auth/register` | Registers a new account (stores plain-text key in Hive DB) |
+| **POST** | `/api/v1/auth/login` | Logs in and returns a stateless bearer JWT |
+| **GET** | `/api/v1/profile` | Fetches active onboarded tech stack and targets |
+| **POST** | `/api/v1/roadmaps` | Launches AI agent search and generates a prep roadmap |
+| **POST** | `/api/v1/interviews` | Commences a timed mock technical/HR interview |
+| **POST** | `/api/v1/interviews/{id}/respond` | Posts student answers and streams real-time agent feedback |
 
-## License
+---
 
-MIT
+## 📝 License
+This project is open-source and available under the [MIT License](LICENSE).

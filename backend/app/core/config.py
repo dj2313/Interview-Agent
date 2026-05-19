@@ -8,8 +8,8 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "your-secret-key-for-development"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 8 days
     
-    # Database
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/interview_agent"
+    # Database (SQLite for dev, override with DATABASE_URL for production)
+    DATABASE_URL: str = "sqlite:///./interview.db"
     
     # Redis
     REDIS_HOST: str = "localhost"
